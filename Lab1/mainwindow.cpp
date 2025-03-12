@@ -10,8 +10,10 @@ void MainWindow::DFT() {
 
     dft.clear();
 
+    #pragma omp parallel for
     for (int k = 0; k < N; ++k) {
         std::complex<double> sum(0, 0);
+        #pragma omp parallel for
         for (int n = 0; n < N; ++n) {
             double angle = -2.0 * M_PI * k * n / N;
             sum += signal[n] * std::complex<double>(cos(angle), sin(angle));
@@ -24,8 +26,10 @@ void MainWindow::IDFT() {
 
     idft.clear();
 
+    #pragma omp parallel for
     for (int n = 0; n < N; ++n) {
         std::complex<double> sum(0, 0);
+        #pragma omp parallel for
         for (int k = 0; k < N; ++k) {
             double angle = 2.0 * M_PI * k * n / N;
             sum += dft[k] * std::complex<double>(cos(angle), sin(angle));
@@ -39,7 +43,8 @@ void MainWindow::drawDefaultFunction() {
     QLineSeries *series = new QLineSeries();
 
     double x = 0;
-    for (int i = 0; i < N; i++, x += step)
+    #pragma omp parallel for
+    for (int i = 0; i < N; i += 10, x += step * 10)
         series->append(x, signal[i]);
 
     QChart *chart = new QChart();
@@ -60,7 +65,8 @@ void MainWindow::drawDftFunction() {
     linePen.setWidth(2);
 
     QChart* chart = new QChart();
-    for (int k = 0; k < N; ++k) {
+    #pragma omp parallel for
+    for (int k = 0; k < N; k += 10) {
         if (std::abs(dft[k]) == 0)
             continue;
 
@@ -85,7 +91,8 @@ void MainWindow::drawIdftFunction() {
 
     QLineSeries* series = new QLineSeries();
     double x = 0;
-    for (int i = 0; i < N; i++, x += step)
+    #pragma omp parallel for
+    for (int i = 0; i < N; i += 10, x += step * 10)
         series->append(x, idft[i]);
 
     QChart* chart = new QChart();
@@ -111,22 +118,30 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     InteractiveChartView *chartView = new InteractiveChartView(nullptr);
     chartView->setRenderHint(QPainter::Antialiasing);
     QVBoxLayout *layout = new QVBoxLayout();
+    QHBoxLayout* hLayout = new QHBoxLayout();
     QPushButton* button = new QPushButton("Сохранить");
     button->setFixedSize(100, 25);
     connect(button, &QPushButton::clicked, this, &MainWindow::saveDefault);
+    hLayout->addWidget(button);
+    button = new QPushButton("Изменить N точек");
+    button->setFixedSize(150, 25);
+    connect(button, &QPushButton::clicked, this, &MainWindow::changeN);
+    hLayout->addWidget(button);
+    QLineEdit* line = new QLineEdit();
+    hLayout->addWidget(line);
     layout->addWidget(chartView);
-    layout->addWidget(button);
+    layout->addLayout(hLayout);
     ui->defaultTab->setLayout(layout);
 
     chartView = new InteractiveChartView(nullptr);
     chartView->setRenderHint(QPainter::Antialiasing);
     layout = new QVBoxLayout();
-    QHBoxLayout* hLayout = new QHBoxLayout();
+    hLayout = new QHBoxLayout();
     button = new QPushButton("Уменьшить амплитуду");
     button->setFixedSize(150, 25);
     connect(button, &QPushButton::clicked, this, &MainWindow::decreaseAmplitude);
     hLayout->addWidget(button);
-    QLineEdit* line = new QLineEdit();
+    line = new QLineEdit();
     hLayout->addWidget(line);
     button = new QPushButton("Обнулить до");
     button->setFixedSize(150, 25);
@@ -152,13 +167,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     layout->addWidget(button);
     ui->idftTab->setLayout(layout);
 
-    double x = 0;
-    while (x <= T) {
-        double val = getFunctionValue(x);
-        signal.push_back(val);
-        x += step;
-    }
-
+    makeSignal();
     drawDefaultFunction();
 
     DFT();
@@ -173,14 +182,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::makeSignal() {
+
+    signal.clear();
+    double x = 0;
+    while (x <= T) {
+        double val = getFunctionValue(x);
+        signal.push_back(val);
+        x += step;
+    }
+}
+
 void MainWindow::saveDefault() {
 
-    saveWav("outputDefault.wav", signal);
+    saveWav("outputDefault.wav", signal, N);
 }
 
 void MainWindow::saveIdft() {
 
-    saveWav("outputIdft.wav", idft);
+    saveWav("outputIdft.wav", idft, N);
 }
 
 void MainWindow::decreaseAmplitude() {
@@ -234,4 +254,25 @@ void MainWindow::returnDefaultDft() {
 
     IDFT();
     drawIdftFunction();
+}
+
+void MainWindow::changeN() {
+
+    QWidget* tab = ui->tabWidget->widget(0);
+    QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(tab->layout());
+    QHBoxLayout* hLayout = qobject_cast<QHBoxLayout*>(layout->itemAt(1)->layout());
+    QLineEdit* line = qobject_cast<QLineEdit*>(hLayout->itemAt(2)->widget());
+
+    if (!line->text().isEmpty()) {
+        double value = line->text().toInt();
+        if (value < 0)
+            return;
+
+        N = value;
+        step = T / N;
+
+        makeSignal();
+        drawDefaultFunction();
+        returnDefaultDft();
+    }
 }

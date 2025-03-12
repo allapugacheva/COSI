@@ -16,6 +16,7 @@
 #include <QDoubleValidator>
 #include "wavsaver.h"
 #include <QTimer>
+#include <omp.h>
 
 using namespace Eigen;
 
@@ -50,6 +51,7 @@ private:
     void IDFT();
     void DFT();
     double getFunctionValue(double x);
+    void makeSignal();
 
 private slots:
     void saveDefault();
@@ -57,5 +59,6 @@ private slots:
     void decreaseAmplitude();
     void makeZero();
     void returnDefaultDft();
+    void changeN();
 };
 #endif // MAINWINDOW_H
