@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>3</number>
+      </property>
+      <widget class="QWidget" name="signalTab">
+       <attribute name="title">
+        <string>signal</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="dftTab">
+       <attribute name="title">
+        <string>dft</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="noiseTab">
+       <attribute name="title">
+        <string>noise</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="l1Tab">
+       <attribute name="title">
+        <string>L1</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="l2Tab">
+       <attribute name="title">
+        <string>L2</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="l3Tab">
+       <attribute name="title">
+        <string>L3</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="il2Tab">
+       <attribute name="title">
+        <string>iL2</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="il1Tab">
+       <attribute name="title">
+        <string>iL1</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="iSignalTab">
+       <attribute name="title">
+        <string>isignal</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="l1ComboBox">
+      <property name="editable">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="l2ComboBox"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="l3ComboBox"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -16,6 +16,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 #include <omp.h>
+#include <algorithm>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

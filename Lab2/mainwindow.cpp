@@ -205,17 +205,18 @@ void MainWindow::makeSignal() {
     double x = 0;
     while (x <= T) {
         sinSignal.push_back(qSin(7 * x));
-        cosSignal.push_back(qCos(2 * x));
+        //cosSignal.push_back(qCos(2 * x));
+        cosSignal.push_back(qSin(7 * x));
         x += step;
     }
 
     // Свертка
     #pragma omp parallel for
-    for (int i = 0; i < N; i++) {
+    for (int n = 0; n < N; n++) {
         double temp = 0;
         #pragma omp parallel for
-        for (int k = 0; k < N; k++)
-            temp += sinSignal[k] * cosSignal[(i - k + N) % N];
+        for (int m = 0; m < N; m++)
+            temp += sinSignal[m] * cosSignal[(n - m + N) % N];
         convSignal.push_back(temp);
     }
 
@@ -231,7 +232,7 @@ void MainWindow::makeSignal() {
 
     dft();
 
-    // Свертка Фурье
+    //Свертка Фурье
     #pragma omp parallel for
     for (int n = 0; n < N; n++) {
         std::complex<double> sum(0, 0);
