@@ -204,9 +204,9 @@ void MainWindow::makeSignal() {
     // Сигналы sin и cos
     double x = 0;
     while (x <= T) {
-        sinSignal.push_back(qSin(7 * x));
+        sinSignal.push_back(5 * qSin(2 * M_PI * x));
         //cosSignal.push_back(qCos(2 * x));
-        cosSignal.push_back(qSin(7 * x));
+        cosSignal.push_back(qCos(185 * x + 35));
         x += step;
     }
 

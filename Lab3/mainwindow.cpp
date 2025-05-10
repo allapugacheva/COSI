@@ -367,7 +367,7 @@ void MainWindow::makeSignal() {
     // Исходный сигнал
     double x = 0;
     while (x <= T) {
-        signal.push_back(qSin(2 * x));
+        signal.push_back(qCos(14 * x));
         x += step;
     }
 

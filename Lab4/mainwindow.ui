@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>4</number>
+      </property>
+      <widget class="QWidget" name="funTab">
+       <attribute name="title">
+        <string>Сигнал</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="filter1Tab">
+       <attribute name="title">
+        <string>Фильтр 1</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="dftFilter1Tab">
+       <attribute name="title">
+        <string>DFT фильтра</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="dftTab">
+       <attribute name="title">
+        <string>DFT</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="filtered1Tab">
+       <attribute name="title">
+        <string>КИХ</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="dftFTab">
+       <attribute name="title">
+        <string>DFT</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="noiseTab">
+       <attribute name="title">
+        <string>Искажение</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="filtered2Tab">
+       <attribute name="title">
+        <string>БИХ</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
